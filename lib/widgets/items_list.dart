@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:first_list_app/widgets/item_tile.dart';
 import 'package:first_list_app/functionality/items_crud.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
+/*
 class ItemsList extends StatelessWidget {
   final bool alreadyDone;
 
@@ -61,7 +59,7 @@ class ItemsList extends StatelessWidget {
         });
   }
 }
-
+*/
 /*
 The old provider code
 return Consumer<ItemsData>(
