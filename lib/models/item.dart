@@ -1,6 +1,6 @@
 class Item {
   //Properties:-
-  //int id;
+  int id;
   String barCode;
   String name;
   double qty;
@@ -14,16 +14,17 @@ class Item {
 
   //Constructor:-
   Item(
-      {this.barCode,
+      {this.id,
+      this.barCode,
       this.name,
       this.qty,
       this.unitPrice,
       this.notes,
-      this.isDone = false});
+      this.isDone});
 
   //Convert from Json
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-        //id: json["id"],
+        id: json["id"],
         barCode: json["barCode"],
         name: json["name"],
         qty: json["qty"],
@@ -31,7 +32,7 @@ class Item {
         unitPrice: json["unitPrice"],
         notes: json["notes"],
         //image: json["image"],
-        isDone: json["isDone"],
+        isDone: json["isDone"] == 0 ? false : true,
         //listId: json["listId"],
         //categoryId: json["categoryId"],
       );
@@ -45,7 +46,7 @@ class Item {
         "unitPrice": unitPrice,
         "notes": notes,
         //"image": image,
-        "isDone": isDone,
+        "isDone": isDone == false ? 0 : 1,
         //"listId": listId,
         //"categoryId": categoryId,
       };

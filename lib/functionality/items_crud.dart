@@ -1,36 +1,83 @@
 import 'package:first_list_app/models/item.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:first_list_app/service/database_connection.dart';
+import 'package:flutter/foundation.dart'; //To use the "ChangeNotifier"
+import 'dart:collection'; //For the UnmodifiableListView
 
-class ItemsCrud {
+class ItemsCrud extends ChangeNotifier {
   final DatabaseConnection instance = DatabaseConnection.instance;
+  final String table = 'items';
 
-  final table = 'items';
+  List<Item> _items = [];
 
-  //Add a new Item, INSERT method
-  Future<int> addItem(Item newItem) async {
-    Database db = await instance.database;
-    return await db.insert(table, newItem.toJson());
+  ItemsCrud() {
+    if (instance != null) {
+      queryAllItems();
+    }
   }
 
-  //get items in the box count
-  // int get itemsCount {
-  //   return box.length;
-  // }
+  //get items count
+  int get itemsCount {
+    return _items.length;
+  }
 
-  //TODO: This is should be the update method when check item
+  UnmodifiableListView<Item> get items {
+    return UnmodifiableListView(_items);
+  }
+
+  //ADD a new Item, INSERT method
+  void addItem(Item newItem) async {
+    Database db = await instance.database;
+    int itemId = await db.insert(table, newItem.toJson());
+    newItem.id = itemId; //you must make it know the generated id in the DB
+
+    _items.add(newItem);
+
+    notifyListeners();
+  }
+
+  //GET all Items from Database
+  void queryAllItems() async {
+    Database db = await instance.database;
+
+    var result = await db.query(table); //get all columns
+
+    result.forEach((element) {
+      var item = Item.fromJson(element);
+      _items.add(item);
+    });
+
+    notifyListeners();
+  }
+
+  //DELETE Item From the Database
+  void deleteItem(int id, int positionIndex) async {
+    Database db = await instance.database;
+    await db.delete(table, where: 'id = ?', whereArgs: [id]);
+    _items.removeAt(positionIndex);
+    notifyListeners();
+  }
+
   //Change the Item status (checked || not checked)
-  // void itemDoneStatus(int itemIndex, Item item) {
-  //   box.putAt(
-  //     itemIndex,
-  //     Item(
-  //       barCode: item.barCode,
-  //       name: item.name,
-  //       qty: item.qty,
-  //       unitPrice: item.unitPrice,
-  //       notes: item.notes,
-  //       isDone: !item.isDone, //put the opposite value
-  //     ),
-  //   );
-  // }
+  void changeDoneStatus(int id, int positionIndex, Item item) async {
+    Database db = await instance.database;
+
+    // item = Item(
+    //   id: item.id,
+    //   barCode: item.barCode,
+    //   name: item.name,
+    //   qty: item.qty,
+    //   unitPrice: item.unitPrice,
+    //   notes: item.notes,
+    //   isDone: !item.isDone, //use the opposite value
+    // );
+
+    item.isDone = !item.isDone; //use the opposite value
+
+    await db.update(table, item.toJson(), where: 'id = ?', whereArgs: [id]);
+
+    _items[positionIndex] = item;
+
+    notifyListeners();
+  }
 }

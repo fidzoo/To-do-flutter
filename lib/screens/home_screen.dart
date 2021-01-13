@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:first_list_app/functionality/scan_function.dart';
-//import 'package:first_list_app/widgets/items_list.dart';
+import 'package:first_list_app/widgets/items_list.dart';
 import 'package:first_list_app/helpers/check_connectivity.dart';
 import 'package:first_list_app/screens/add_item_screen.dart';
 
@@ -77,17 +77,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          //TODO: The original code is below to get it back
-          //* note down
-        ],
-      ),
-    );
-  }
-}
-
-/*The idea here is that the lower container is expanded to make it always stick after the upper container*/
-/*
-Container(
+          Container(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -118,5 +108,15 @@ Container(
               ),
             ),
           ),
+          //* note down
+        ],
+      ),
+    );
+  }
+}
+
+/*The idea here is that the lower container is expanded to make it always stick after the upper container*/
+/*
+
 
  */

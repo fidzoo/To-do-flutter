@@ -13,7 +13,7 @@ class DatabaseConnection {
   static final DatabaseConnection instance =
       DatabaseConnection._privateConstructor();
 
-  // only have a single app-wide reference to the database
+  // only have a single app-wide reference to the database "one instance"
   static Database _database;
 
   Future<Database> get database async {

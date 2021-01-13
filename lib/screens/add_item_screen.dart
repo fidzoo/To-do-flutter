@@ -1,3 +1,4 @@
+import 'package:first_list_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:first_list_app/components/number_picker.dart';
 import 'package:first_list_app/components/dropdown_list.dart';
@@ -5,6 +6,7 @@ import 'package:first_list_app/models/dropdowns_data.dart';
 import 'package:first_list_app/models/item.dart';
 import 'package:first_list_app/functionality/items_crud.dart';
 import 'package:first_list_app/components/simple_alert_box.dart';
+import 'package:provider/provider.dart';
 
 class AddItemScreen extends StatefulWidget {
   static const String screenId = 'add_item_screen';
@@ -164,13 +166,18 @@ class _AddItemScreenState extends State<AddItemScreen> {
                           qty: _qty.toDouble(),
                           unitPrice: _unitPrice,
                           notes: _notes,
+                          isDone: false,
                         );
 
                         //using custom function to add the item
-                        ItemsCrud itemData = ItemsCrud();
-                        itemData.addItem(newItem);
+                        // ItemsCrud itemData = ItemsCrud();
+                        // itemData.addItem(newItem);
+                        Provider.of<ItemsCrud>(context, listen: false)
+                            .addItem(newItem);
 
-                        Navigator.pop(context); //back to previous page
+                        Navigator.pushNamed(
+                            context, 'home_screen'); //back to home screen
+                        //Navigator.pop(context);
                       }
                     },
                     child: Text('إضافة'),
