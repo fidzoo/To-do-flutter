@@ -96,8 +96,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   androidDropdown(
-                      itemsUnits), //this is the unites ex. "1 case, 1 bottle"
+                    itemsUnits,
+                  ), //this is the unites ex. "1 case, 1 bottle"
                   NumberPicker(
+                    startNumber: 1,
                     getNumber: _updateQty,
                   ), //from components folder
                   Text(

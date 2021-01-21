@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
 class NumberPicker extends StatefulWidget {
+  final int startNumber;
   final Function getNumber;
 
-  NumberPicker({this.getNumber});
+  NumberPicker({this.getNumber, @required this.startNumber});
 
   @override
   _NumberPickerState createState() => _NumberPickerState();
 }
 
 class _NumberPickerState extends State<NumberPicker> {
-  int _n = 1;
+  int _n;
+
+  @override
+  void initState() {
+    super.initState();
+    _n = widget.startNumber;
+  }
 
   void add() {
     setState(() {

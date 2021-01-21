@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:first_list_app/widgets/item_tile.dart';
 import 'package:first_list_app/functionality/items_crud.dart';
-import 'package:first_list_app/models/item.dart';
 import 'package:provider/provider.dart';
+import 'package:first_list_app/screens/Edit_item_screen.dart';
 
 class ItemsList extends StatelessWidget {
   final bool alreadyDone;
@@ -24,7 +24,15 @@ class ItemsList extends StatelessWidget {
             if (item.isDone == false) {
               return GestureDetector(
                 onLongPress: () {
-                  print('HELLO!!');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditItemScreen(
+                        itemData: item,
+                        positionIndex: index,
+                      ),
+                    ),
+                  );
                 },
                 child: ItemTile(
                     itemName: item.name,
@@ -40,15 +48,28 @@ class ItemsList extends StatelessWidget {
               return Container();
           } else if (alreadyDone == true) {
             if (item.isDone == true) {
-              return ItemTile(
-                  itemName: item.name,
-                  isChecked: item.isDone,
-                  checkboxCallback: (value) {
-                    itemsList.changeDoneStatus(item.id, index, item);
-                  },
-                  deleteCallback: () {
-                    itemsList.deleteItem(item.id, index);
-                  });
+              return GestureDetector(
+                onLongPress: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditItemScreen(
+                        itemData: item,
+                        positionIndex: index,
+                      ),
+                    ),
+                  );
+                },
+                child: ItemTile(
+                    itemName: item.name,
+                    isChecked: item.isDone,
+                    checkboxCallback: (value) {
+                      itemsList.changeDoneStatus(item.id, index, item);
+                    },
+                    deleteCallback: () {
+                      itemsList.deleteItem(item.id, index);
+                    }),
+              );
             } else
               return Container();
           }
@@ -114,24 +135,4 @@ already done items*/
           );
         });
   }
- */
-
-/*
-The old provider code
-return Consumer<ItemsData>(
-      builder: (context, itemsData, child) {
-        return ListView.builder(
-          itemCount: itemsData.itemsCount,
-          itemBuilder: (context, index) {
-            final task = itemsData.box.getAt(index);
-
-            return ItemTile(
-              itemName: task.name,
-              isChecked: task.isDone,
-              checkboxCallback: null, //it will open the change screen later
-            );
-          },
-        );
-      },
-    );
  */

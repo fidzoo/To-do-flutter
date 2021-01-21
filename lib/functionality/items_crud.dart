@@ -50,6 +50,18 @@ class ItemsCrud extends ChangeNotifier {
     notifyListeners();
   }
 
+  //UPDATE Item in the Database
+  void updateItem(int positionIndex, Item item) async {
+    Database db = await instance.database;
+
+    await db
+        .update(table, item.toJson(), where: 'id = ?', whereArgs: [item.id]);
+
+    _items[positionIndex] = item;
+
+    notifyListeners();
+  }
+
   //DELETE Item From the Database
   void deleteItem(int id, int positionIndex) async {
     Database db = await instance.database;
@@ -61,16 +73,6 @@ class ItemsCrud extends ChangeNotifier {
   //Change the Item status (checked || not checked)
   void changeDoneStatus(int id, int positionIndex, Item item) async {
     Database db = await instance.database;
-
-    // item = Item(
-    //   id: item.id,
-    //   barCode: item.barCode,
-    //   name: item.name,
-    //   qty: item.qty,
-    //   unitPrice: item.unitPrice,
-    //   notes: item.notes,
-    //   isDone: !item.isDone, //use the opposite value
-    // );
 
     item.isDone = !item.isDone; //use the opposite value
 
